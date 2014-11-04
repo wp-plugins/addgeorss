@@ -24,7 +24,7 @@ The image file is only read once.
 
 == Frequently Asked Questions ==
 
-== Why?? ==
+= Why?? =
 Why not? Lots of systems can read GEORSS and add it to a map. 
 
 == Screenshots ==
