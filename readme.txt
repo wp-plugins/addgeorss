@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: jondor
-Donate link: 
+Donate link: http://www.funsite.eu/downloadable-wallpapers/
 Tags: featured image,gps,rss,georss
 Requires at least: 3.0.1
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

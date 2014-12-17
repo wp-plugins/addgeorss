@@ -66,6 +66,18 @@ function feed_addMeta($for_comments) {
 	}
 }
 
+/* -------------------------------------------------------------------------------------- */
+function addgeorss_PluginLinks($links, $file) {
+		$base = plugin_basename(__FILE__);
+		if ($file == $base) {
+			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/addgeorss">' . __('A review would be appriciated.','wp_widget_plugin') . '</a>';
+		}
+		return $links;
+	}
+
+add_filter('plugin_row_meta', 'addgeorss_PluginLinks',10,2);
+
+
 add_action( "rss2_ns", "feed_addNameSpace" );
 add_action( "rss_item", "feed_addMeta", 5, 1 );
 add_action( "rss2_item", "feed_addMeta", 5, 1 );
