@@ -4,7 +4,7 @@ Donate link: http://www.funsite.eu/downloadable-wallpapers/
 Tags: featured image,gps,rss,georss
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ The image file is only read once.
 
 1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Add the widget to a widgetarea. You can set the widget title, width and height in pixels, and the zoomlevel.
+
 
 == Frequently Asked Questions ==
 
@@ -32,6 +32,10 @@ Why not? Lots of systems can read GEORSS and add it to a map.
 1. Example of georss tags
 
 == Changelog ==
+
+= 1.1 =
+Rewriten to classbased plugin. Fixes some clashes with my other plugins.
+The plugin is now translatable, but since there's only 1 single line begging for a review, I didn't really bother to provide the dutch translation.
 
 = 1.0 =
 * First release

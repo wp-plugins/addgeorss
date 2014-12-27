@@ -1,18 +1,29 @@
 <?php
 /**
  * @package addGEORSS
- * @version 1.0
+ * @version 1.1
  */
 /*
 Plugin Name: addGEORSS
 Plugin URI: http://www.funsite.eu/addGEORSS
 Description: Adds a GEORSS point to the RSS feed using the GEO information in the featured image
 Author: Gerhard Hoogterp
-Version: 1.0
+Version: 1.1
 Author URI: http://www.funsite.eu/
 */
 
-if (!function_exists('gps')) {
+class addgeorss {
+
+	const FS_TEXTDOMAIN = 'addgeorss';
+	
+    public function __construct() {
+		add_action('init', array($this,'myTextDomain'));
+		add_filter('plugin_row_meta', array($this,'addgeorss_PluginLinks'),10,2);
+		add_action( "rss2_ns", array($this,"feed_addNameSpace") );
+		add_action( "rss_item", array($this,"feed_addMeta"), 5, 1 );
+		add_action( "rss2_item", array($this,"feed_addMeta"), 5, 1 );
+    }
+
 	function gps($coordinate, $hemisphere) {
 		for ($i = 0; $i < 3; $i++) {
 		$part = explode('/', $coordinate[$i]);
@@ -28,8 +39,7 @@ if (!function_exists('gps')) {
 		$sign = ($hemisphere == 'W' || $hemisphere == 'S') ? -1 : 1;
 		return $sign * ($degrees + $minutes/60 + $seconds/3600);
 	}
-}
-if (!function_exists('getLocationFromDBorExif')) {
+
 	function getLocationFromDBorExif($post_thumbnail_id) {
 		// Check if the location is already stored in the database
 		// if not, try to get it from the EXIF information and store it.
@@ -39,8 +49,8 @@ if (!function_exists('getLocationFromDBorExif')) {
 			$thumbnail=get_attached_file( $post_thumbnail_id, true );
 			$exif = exif_read_data($thumbnail);
 			if (is_array($exif["GPSLatitude"]) && is_array($exif["GPSLongitude"])) {
-				$location['latitude'] = gps($exif["GPSLatitude"], $exif['GPSLatitudeRef']);
-				$location['longitude'] = gps($exif["GPSLongitude"], $exif['GPSLongitudeRef']);
+				$location['latitude'] = $this->gps($exif["GPSLatitude"], $exif['GPSLatitudeRef']);
+				$location['longitude'] = $this->gps($exif["GPSLongitude"], $exif['GPSLongitudeRef']);
 				$location['hasLocation'] = true;
 
 				} else {
@@ -51,34 +61,37 @@ if (!function_exists('getLocationFromDBorExif')) {
 		}
 	return $location;
 	}
-}
 
-function feed_addNameSpace() {
-	echo 'xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"'."\n";
-}
-
-function feed_addMeta($for_comments) {
-	$post_thumbnail_id = get_post_thumbnail_id( $GLOBALS['post']->ID );
-	$location = getLocationFromDBorExif($post_thumbnail_id);
-	if (!$for_comments && $location['hasLocation']) {
-		echo "<geo:lat>".$location['latitude']."</geo:lat>\n";
-		echo "<geo:long>".$location['longitude']."</geo:long>\n";
+	function feed_addNameSpace() {
+		echo 'xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"'."\n";
 	}
-}
 
-/* -------------------------------------------------------------------------------------- */
-function addgeorss_PluginLinks($links, $file) {
+	function feed_addMeta($for_comments) {
+		$post_thumbnail_id = get_post_thumbnail_id( $GLOBALS['post']->ID );
+		$location = $this->getLocationFromDBorExif($post_thumbnail_id);
+		if (!$for_comments && $location['hasLocation']) {
+			echo "<geo:lat>".$location['latitude']."</geo:lat>\n";
+			echo "<geo:long>".$location['longitude']."</geo:long>\n";
+		}
+	}
+
+	function addgeorss_PluginLinks($links, $file) {
 		$base = plugin_basename(__FILE__);
 		if ($file == $base) {
-			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/addgeorss">' . __('A review would be appriciated.','wp_widget_plugin') . '</a>';
+			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/addgeorss">' . __('A review would be appriciated.',self::FS_TEXTDOMAIN) . '</a>';
 		}
 		return $links;
 	}
 
-add_filter('plugin_row_meta', 'addgeorss_PluginLinks',10,2);
+	function myTextDomain() {
+		load_plugin_textdomain(
+			self::FS_TEXTDOMAIN,
+			false,
+			dirname(plugin_basename(__FILE__)).'/languages/'
+		);
+	}
+	
+}
 
-
-add_action( "rss2_ns", "feed_addNameSpace" );
-add_action( "rss_item", "feed_addMeta", 5, 1 );
-add_action( "rss2_item", "feed_addMeta", 5, 1 );
+$addgeorss = new addgeorss();
 ?>
