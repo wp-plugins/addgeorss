@@ -1,20 +1,21 @@
 <?php
 /**
  * @package addGEORSS
- * @version 1.1
+ * @version 1.2
  */
 /*
 Plugin Name: addGEORSS
 Plugin URI: http://www.funsite.eu/addGEORSS
 Description: Adds a GEORSS point to the RSS feed using the GEO information in the featured image
 Author: Gerhard Hoogterp
-Version: 1.1
+Version: 1.2
 Author URI: http://www.funsite.eu/
 */
 
-class addgeorss {
+class addgeorss_class {
 
 	const FS_TEXTDOMAIN = 'addgeorss';
+	const FS_PLUGINNAME = 'addgeorss';
 	
     public function __construct() {
 		add_action('init', array($this,'myTextDomain'));
@@ -78,7 +79,7 @@ class addgeorss {
 	function addgeorss_PluginLinks($links, $file) {
 		$base = plugin_basename(__FILE__);
 		if ($file == $base) {
-			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/addgeorss">' . __('A review would be appriciated.',self::FS_TEXTDOMAIN) . '</a>';
+			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/'.self::FS_PLUGINNAME.'#postform">' . __('Please rate me.',self::FS_TEXTDOMAIN) . '</a>';
 		}
 		return $links;
 	}
@@ -93,5 +94,5 @@ class addgeorss {
 	
 }
 
-$addgeorss = new addgeorss();
+$addgeorss = new addgeorss_class();
 ?>

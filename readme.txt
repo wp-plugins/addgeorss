@@ -4,7 +4,7 @@ Donate link: http://www.funsite.eu/downloadable-wallpapers/
 Tags: featured image,gps,rss,georss
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ Why not? Lots of systems can read GEORSS and add it to a map.
 1. Example of georss tags
 
 == Changelog ==
+
+= 1.2 =
+fixed some bugs
+added dutch translationfile.. (was busy with it anyhow)
 
 = 1.1 =
 Rewriten to classbased plugin. Fixes some clashes with my other plugins.
