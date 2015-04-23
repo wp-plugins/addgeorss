@@ -12,19 +12,34 @@ Version: 1.2
 Author URI: http://www.funsite.eu/
 */
 
-class addgeorss_class {
+if (!class_exists('basic_plugin_class')) {
+	require(plugin_dir_path(__FILE__).'basics/basic_plugin.class');
+}
 
-	const FS_TEXTDOMAIN = 'addgeorss';
-	const FS_PLUGINNAME = 'addgeorss';
-	
+class addgeorss_class  extends basic_plugin_class {
+
+	function getPluginBaseName() { return plugin_basename(__FILE__); }
+	function getChildClassName() { return get_class($this); }
+
     public function __construct() {
-		add_action('init', array($this,'myTextDomain'));
-		add_filter('plugin_row_meta', array($this,'addgeorss_PluginLinks'),10,2);
+		parent::__construct();
+		
 		add_action( "rss2_ns", array($this,"feed_addNameSpace") );
 		add_action( "rss_item", array($this,"feed_addMeta"), 5, 1 );
 		add_action( "rss2_item", array($this,"feed_addMeta"), 5, 1 );
     }
 
+	
+	function pluginInfoRight($info) {  }
+	
+    
+// The real plugin content   
+   
+   
+	const FS_TEXTDOMAIN = 'addgeorss';
+	const FS_PLUGINNAME = 'addgeorss';
+    
+    
 	function gps($coordinate, $hemisphere) {
 		for ($i = 0; $i < 3; $i++) {
 		$part = explode('/', $coordinate[$i]);
@@ -76,22 +91,6 @@ class addgeorss_class {
 		}
 	}
 
-	function addgeorss_PluginLinks($links, $file) {
-		$base = plugin_basename(__FILE__);
-		if ($file == $base) {
-			$links[] = '<a href="https://wordpress.org/support/view/plugin-reviews/'.self::FS_PLUGINNAME.'#postform">' . __('Please rate me.',self::FS_TEXTDOMAIN) . '</a>';
-		}
-		return $links;
-	}
-
-	function myTextDomain() {
-		load_plugin_textdomain(
-			self::FS_TEXTDOMAIN,
-			false,
-			dirname(plugin_basename(__FILE__)).'/languages/'
-		);
-	}
-	
 }
 
 $addgeorss = new addgeorss_class();
