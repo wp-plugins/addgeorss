@@ -5,11 +5,11 @@
  */
 /*
 Plugin Name: addGEORSS
-Plugin URI: http://www.funsite.eu/addGEORSS
+Plugin URI: http://plugins.funsite.eu/addgeorss/
 Description: Adds a GEORSS point to the RSS feed using the GEO information in the featured image
 Author: Gerhard Hoogterp
 Version: 1.2
-Author URI: http://www.funsite.eu/
+Author URI: http://plugins.funsite.eu/
 */
 
 if (!class_exists('basic_plugin_class')) {
